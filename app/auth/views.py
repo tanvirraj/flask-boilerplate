@@ -4,15 +4,9 @@ from app import db
 from app.models import User
 
 
-auth_blueprint = Blueprint('auth_blueprint', __name__)
-
-
 class RegistrationView(MethodView):
     def post(self):
         data = request.get_json(force=True)
-        print("print data")
-        print(data['password'])
-        print(data['email'])
         user = User.query.filter_by(email=data['email']).first()
         if not user:
             try:
@@ -62,22 +56,3 @@ class LoginView(MethodView):
                 'message': str(e)
             }
             return make_response(jsonify(response)), 500
-
-
-registration_view = RegistrationView.as_view('registration_view')
-login_view = LoginView.as_view('login_view')
-
-
-auth_blueprint.add_url_rule(
-    '/auth/register', view_func=registration_view, methods=['POST'])
-
-auth_blueprint.add_url_rule(
-    '/auth/login', view_func=login_view, methods=['POST'])
-
-
-"""
-{
-	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjR9.Xvj-KqqSVl_VB2w4vkx2ENiMx_2Sk4Sc8XkkyV0cJKE",
-	"message": "you logged in successfully"
-}
-"""

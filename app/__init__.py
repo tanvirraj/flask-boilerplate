@@ -13,9 +13,10 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     migrate = Migrate(app, db)
-    # from app import routes, models
-    from app.bucket.routes import bucketlist
-    from app.auth.routes import auth_blueprint
+
+    from app.bucket.views import bucketlist
+    # from app.auth.views import auth_blueprint
+    from app.auth import auth_blueprint
 
     app.register_blueprint(bucketlist)
     app.register_blueprint(auth_blueprint)
